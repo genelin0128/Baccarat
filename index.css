@@ -1,0 +1,882 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+main {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    max-height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    filter: blur(10000px);
+}
+
+.preventClickingBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.userID-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1001;
+}
+
+input[type="text"] {
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.startPlayingBtn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.startPlayingBtn:hover {
+    background-color: #a2e6a4;
+}
+
+.resetBet_dealBtn-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 45%;
+    height: auto;
+    position: absolute;
+    top: 7%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.resetBetBtn {
+    padding: 1% 3%;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 0 9px #999;
+}
+
+.resetBetBtn:hover {
+    background-color: #ff4444;
+}
+
+.resetBetBtn:active {
+    background-color: #ff4444;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.dealBtn {
+    padding: 1% 3%;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 0 9px #999;
+}
+
+.dealBtn:hover {
+    background-color: #a2e6a4;
+}
+
+.dealBtn:active {
+    background-color: #a2e6a4;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.nextRoundBtn {
+    padding: 1% 3%;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 0 9px #999;
+}
+
+.nextRoundBtn:hover {
+    background-color: #686868;
+}
+
+.nextRoundBtn:active {
+    background-color: #686868;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+#gameCanvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    transition: filter 0.2s ease;
+    width: 45%;
+    height: auto;
+}
+
+.chips-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 45%;
+    height: auto;
+    position: absolute;
+    top: 92%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.chip {
+    width: 15%;
+    height: auto;
+    border-radius: 50%;;
+    cursor: pointer;
+    box-shadow: 0 9px #999;
+    display: inline-block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chip:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+}
+
+.chip:active {
+    transform: translateY(4px);
+    box-shadow: 0 5px #666;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  filter: grayscale(60%);
+}
+
+img {
+    width: 120px;
+    height: auto;
+}
+
+.spacer {
+    width: 12px;
+}
+
+.padding {
+    width: 10px;
+}
+
+#resultContainer {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    background-color: red;
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+    text-align: center;
+}
+
+#resultMessage, #playerResult, #bankerResult{
+    font-family: "Arial Black";
+    font-size: 20px;
+    text-align: center;
+    color: yellow;
+}
+
+#closeResultBtn{
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#closeResultBtn:hover {
+    background-color: #838383;
+}
+
+/*--------------------------- Windows from the side bar for mode selection ---------------------------*/
+#modeSelectionMessageFromSideBarContainer {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+    text-align: center;
+}
+
+#modeSelectionMessageFromSideBar {
+    font-family: "Arial Black";
+    font-size: 20px;
+    text-align: center;
+    color: black;
+}
+
+#beginnerModeSelectionBtn {
+    padding: 10px 20px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#beginnerModeSelectionBtn:hover {
+    background-color: #ff6868;
+}
+
+#intermediateModeSelectionBtn {
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    justify-items: center;
+}
+
+#intermediateModeSelectionBtn:hover {
+    background-color: #838383;
+}
+
+#advancedModeSelectionBtn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#advancedModeSelectionBtn:hover {
+    background-color: #a2e6a4;
+}
+
+#cancelModeSelectionBtn {
+    display: none;
+    padding: 10px 20px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#cancelModeSelectionBtn:hover {
+    background-color: #ff6868;
+}
+
+#continueModeSelectionBtn {
+    display: none;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#continueModeSelectionBtn:hover {
+    background-color: #a2e6a4;
+}
+
+
+#closeModeSelectionMessageFromSideBarBtn {
+    display: none;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    justify-items: center;
+}
+
+#closeModeSelectionMessageFromSideBarBtn:hover {
+    background-color: #838383;
+}
+
+.beginner_intermediate_advanced_ModeSelectionMessageFromSideBar_continue_Btn-Container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/*--------------------------- Windows from the side bar for mode selection ---------------------------*/
+
+/*--------------------------- Windows from the side bar for card swap ---------------------------*/
+#cardSwapMessageFromSideBarContainer {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 580px;
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+    text-align: center;
+}
+
+#cardSwapMessageFromSideBar {
+    font-family: "Arial Black";
+    font-size: 20px;
+    text-align: center;
+    color: black;
+}
+
+#cancelCardSwapBtn {
+    padding: 10px 20px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#cancelCardSwapBtn:hover {
+    background-color: #ff6868;
+}
+
+#closeCardSwapMessageFromSideBarBtn {
+    display: none;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    justify-items: center;
+}
+
+#closeCardSwapMessageFromSideBarBtn:hover {
+    background-color: #838383;
+}
+
+#continueCardSwapBtn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#continueCardSwapBtn:hover {
+    background-color: #a2e6a4;
+}
+
+.cancel_closeCardSwapMessageFromSideBar_continue_Btn-Container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/*--------------------------- Windows from the side bar for card swap ---------------------------*/
+
+/*--------------------------- Windows from the side bar for card reshuffle ---------------------------*/
+#cardReshuffleMessageFromSideBarContainer {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 580px;
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+    text-align: center;
+}
+
+#cardReshuffleMessageFromSideBar {
+    font-family: "Arial Black";
+    font-size: 20px;
+    text-align: center;
+    color: black;
+}
+
+#cancelCardReshuffleBtn {
+    padding: 10px 20px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#cancelCardReshuffleBtn:hover {
+    background-color: #ff6868;
+}
+
+#closeCardReshuffleMessageFromSideBarBtn {
+    display: none;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    justify-items: center;
+}
+
+#closeCardReshuffleMessageFromSideBarBtn:hover {
+    background-color: #838383;
+}
+
+#continueCardReshuffleBtn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#continueCardReshuffleBtn:hover {
+    background-color: #a2e6a4;
+}
+
+.cancel_closeCardReshuffleMessageFromSideBar_continue_Btn-Container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/*--------------------------- Windows from the side bar for card reshuffle ---------------------------*/
+
+/*--------------------------- Windows from the side bar for auto deal ---------------------------*/
+#autoDealMessageFromSideBarContainer {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 580px;
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+    text-align: center;
+}
+
+#autoDealMessageFromSideBar, #autoDealHeader {
+    font-family: "Arial Black";
+    font-size: 20px;
+    text-align: center;
+    color: black;
+}
+
+#autoDealRounds {
+    width: 40%;
+    margin: 10px auto;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#stopAutoDealBtn {
+    display: none;
+    padding: 10px 20px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#stopAutoDealBtn:hover {
+    background-color: #ff6868;
+}
+
+#cancelAutoDealBtn {
+    padding: 10px 20px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#cancelAutoDealBtn:hover {
+    background-color: #ff6868;
+}
+
+#closeAutoDealMessageFromSideBarBtn {
+    display: none;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    justify-items: center;
+}
+
+#closeAutoDealMessageFromSideBarBtn:hover {
+    background-color: #838383;
+}
+
+#closeAutoDealWarningMessageFromSideBarBtn {
+    display: none;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    justify-items: center;
+}
+
+#closeAutoDealWarningMessageFromSideBarBtn:hover {
+    background-color: #838383;
+}
+
+#continueAutoDealBtn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#continueAutoDealBtn:hover {
+    background-color: #a2e6a4;
+}
+
+.stop_cancel_closeAutoDealMessageFromSideBar_continue_Btn-Container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/*--------------------------- Windows from the side bar for auto deal ---------------------------*/
+
+.timer {
+    position: fixed;
+    top: 2%;
+    left: 13%;
+    width: 5.5%;
+    height: 10.5%;
+}
+
+.currentBalance_chipsSelected-Container {
+    position: fixed;
+    top: 18%;
+    left: 7%;
+    width: 18%;
+    height: 64%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.balance-container {
+    width: 100%;
+    padding: 15px;
+    background-color: #bfbfbf;
+    border: 5px solid #ddd;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#currentBalance, .balanceDollarSymbol {
+    font-size: 35px;
+    color: gold;
+}
+
+#roundResult {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.balance-update {
+    animation: spin 1s ease-out;
+    display: inline-block;
+}
+
+.won {
+    color: green;
+}
+
+.lost {
+    color: red;
+}
+
+.chipsSelected-container {
+    width: 100%;
+    padding: 15px;
+    background-color: #bfbfbf;
+    border: 5px solid #ddd;
+    text-align: center;
+    border-radius: 10px;
+    top: 60%;
+    left: 7%;
+}
+
+#chipsSelected{
+    font-size: 35px;
+    color: gold;
+}
+
+.theBiggestHandYouWon_accumulateTotalBetVolume-container {
+    position: fixed;
+    top: 18%;
+    right: 5%;
+    width: 20%;
+    height: 64%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.theBiggestHandYouWon-container {
+    width: 100%;
+    padding: 15px;
+    background-color: #bfbfbf;
+    border: 5px solid #ddd;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#theBiggestHandYouWon{
+    font-size: 35px;
+    color: gold;
+}
+
+.accumulateTotalBetVolume-container {
+    width: 100%;
+    padding: 15px;
+    background-color: #bfbfbf;
+    border: 5px solid #ddd;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#accumulateTotalBetVolume{
+    font-size: 35px;
+    color: gold;
+}
+
+/*--------------------------- Slide Panel Content ---------------------------*/
+.slide-panel {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: -3000px;
+    width: 25%;
+    height: 100%;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+    transition: right 0.3s ease;
+    padding: 1%;
+    overflow-y: auto;
+    border: 1px solid gray;
+}
+
+.slide-panel.open {
+    right: 0;
+    display: block;
+}
+
+.panelCloseBtn {
+    position: absolute;
+    top: 2%;
+    right: 7%;
+    font-size: 150%;
+    color: black;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+thead th, tbody td {
+    padding: 2%;
+    border: 1px solid gray;
+}
+
+/*--------------------------- Road Map ---------------------------*/
+
+.roadMap-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  width: 100%;
+  height: 30%;
+}
+
+.cell {
+  position: relative;
+    padding: 0%;
+  border: 1px solid #ddd;
+  overflow: hidden;
+}
+
+.cell span {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.banker {
+  background-color: red;
+}
+
+.tie {
+  background-color: green;
+}
+
+.player {
+  background-color: blue;
+}
+
+/*--------------------------- Windows from Card Squeezing ---------------------------*/
+#squeezeCardContainer {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 580px;
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+    text-align: center;
+}
+
+#squeezeCardMessage {
+    font-family: "Arial Black";
+    font-size: 20px;
+    text-align: center;
+    color: black;
+}
+
+#closesqueezeCardMessageBtn {
+    display: block;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    justify-items: center;
+}
+
+#closesqueezeCardMessageBtn:hover {
+    background-color: #838383;
+}
+
+.closesqueezeCardMessageBtn-Container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*--------------------------- Windows from Card Squeezing ---------------------------*/
+
+/*--------------------------- Windows from auto reset deck ---------------------------*/
+#autoResetDeckContainer {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 580px;
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+    text-align: center;
+}
+
+#autoResetDeckMessage {
+    font-family: "Arial Black";
+    font-size: 20px;
+    text-align: center;
+    color: black;
+}
+
+#closeAutoResetDeckMessageBtn {
+    display: block;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    justify-items: center;
+}
+
+#closeAutoResetDeckMessageBtn:hover {
+    background-color: #838383;
+}
+
+.closeAutoResetDeckMessageBtn-Container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*--------------------------- Windows from auto reset deck ---------------------------*/

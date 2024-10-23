@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Baccarat</title>
+    <link rel="icon" href="img/icon/baccarat.png" type="image/png">
+    <meta name="author" content="Gene Lin">
+    <link rel="stylesheet" href="index.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+
+    <div id="preventClickingBackground" class="preventClickingBackground"></div>
+
+    <main>
+        <div class="d-flex flex-column bg-light" style="width: 4.5rem;">
+            <a title="Baccarat Icon">
+                <img src="img/icon/baccarat.png" class="img-fluid" style="width: 100%; height: auto;">
+            </a>
+            <ul class="nav nav-pills flex-column mb-auto text-center">
+                <li class="nav-item">
+                    <a href="#" class="nav-link py-3 border-bottom" id="dashboard"  title="Dashboard">
+                        <i class="bi bi-speedometer2 fs-4"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link py-3 border-bottom" id="squeezeCard" title="Squeeze Card">
+                        <i class="bi bi-back fs-4"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link py-3 border-bottom" id="modeSelection" title="Mode selection">
+                        <i class="bi bi bi-wrench-adjustable fs-4"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link py-3 border-bottom" id="cardSwapping" title="Swap card">
+                        <i class="bi bi-arrow-down-up fs-4"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link py-3 border-bottom" id="cardReshuffling" title="Shuffle the cards">
+                        <i class="bi bi-shuffle fs-4"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link py-3 border-bottom" id="autoDeal" title="Auto deal">
+                        <i class="bi bi-robot fs-4"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link py-3 border-bottom" id="screenshot" title="Take a screenshot">
+                        <i class="bi bi-camera-fill fs-4"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link py-3 border-bottom" id="rulesOfBaccarat" title="Rules Of Baccarat">
+                        <i class="bi bi-book fs-4"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="timer">
+            <div class="bg-indigo-600 h-full flex items-center justify-center rounded-lg overflow-hidden">
+                <p class="countdown-element seconds font-Cormorant font-semibold text-white text-center" style="margin-bottom: 0rem; font-size: 200%"></p>
+            </div>
+            <div>
+                <p class="text-lg font-Cormorant font-normal text-gray-900 mt-1 text-center w-full">seconds</p>
+            </div>
+        </div>
+
+        <div class="currentBalance_chipsSelected-Container">
+            <div class="balance-container">
+                <h3>Current Balance</h3>
+                <br>
+                <h3 class="animate-bounce balanceDollarSymbol">$ <span id="currentBalance"></span></h3>
+                <hr>
+                <h4 id="roundResult"></h4>
+            </div>
+
+            <div class="chipsSelected-container">
+                <h3>Chips Selected</h3>
+                <br>
+                <h3 class="animate-bounce balanceDollarSymbol">$ <span id="chipsSelected">0</span></h3>
+                <hr>
+            </div>
+        </div>
+
+        <div class="theBiggestHandYouWon_accumulateTotalBetVolume-container">
+            <div class="theBiggestHandYouWon-container">
+                <h3>The Biggest Hand You Won</h3>
+                <br>
+                <h3 class="animate-bounce balanceDollarSymbol">$ <span id="theBiggestHandYouWon"></span></h3>
+                <hr>
+            </div>
+            <div class="accumulateTotalBetVolume-container">
+                <h3>Accumulate Total Bet Volume</h3>
+                <br>
+                <h3 class="animate-bounce balanceDollarSymbol">$ <span id="accumulateTotalBetVolume"></span></h3>
+                <hr>
+            </div>
+        </div>
+
+        <div class="resetBet_dealBtn-container">
+            <button id="resetBetBtn" class="resetBetBtn">Reset Bet</button>
+            <button id="dealBtn" class="dealBtn">Deal</button>
+            <button id="nextRoundBtn" class="nextRoundBtn">Next Round</button>
+        </div>
+
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+        <div id="chips" class="chips-container">
+            <div class="padding"></div>
+            <img src="img/chips/chip100.png" alt="Chip 100" id="chip100" class="chip">
+            <div class="spacer"></div>
+            <img src="img/chips/chip500.png" alt="Chip 500" id="chip500" class="chip">
+            <div class="spacer"></div>
+            <img src="img/chips/chip1000.png" alt="Chip 1000" id="chip1000" class="chip">
+            <div class="spacer"></div>
+            <img src="img/chips/chip2000.png" alt="Chip 2000" id="chip2000" class="chip">
+            <div class="spacer"></div>
+            <img src="img/chips/chip5000.png" alt="Chip 5000" id="chip5000" class="chip">
+            <div class="spacer"></div>
+            <img src="img/chips/chip10000.png" alt="Chip 10000" id="chip10000" class="chip">
+            <div class="padding"></div>
+        </div>
+
+    </main>
+
+    <div id="resultContainer">
+        <p id="playerResult"></p>
+        <p id="bankerResult"></p>
+        <p id="resultMessage"></p>
+        <button id="closeResultBtn"><i class="bi bi-x-lg"></i></button>
+    </div>
+
+    <!-- Squeeze Card -->
+    <div id="squeezeCardContainer">
+        <p id="squeezeCardMessage"></p>
+        <div class="closesqueezeCardMessageBtn-Container">
+            <button id="closesqueezeCardMessageBtn"><i class="bi bi-x-lg"></i></button>
+        </div>
+    </div>
+    <!-- Auto Reset Deck -->
+
+    <!-- Auto Reset Deck -->
+    <div id="autoResetDeckContainer">
+        <p id="autoResetDeckMessage">Since 30 rounds of games have already been played, the deck have been forcibly reset!</p>
+        <div class="closeAutoResetDeckMessageBtn-Container">
+            <button id="closeAutoResetDeckMessageBtn"><i class="bi bi-x-lg"></i></button>
+        </div>
+    </div>
+    <!-- Auto Reset Deck -->
+
+    <!-- Mode Selection -->
+    <div id="modeSelectionMessageFromSideBarContainer">
+        <p id="modeSelectionMessageFromSideBar"></p>
+        <div class="beginner_intermediate_advanced_ModeSelectionMessageFromSideBar_continue_Btn-Container">
+            <button id="beginnerModeSelectionBtn">Beginner</button>
+            <button id="intermediateModeSelectionBtn">Intermediate</button>
+            <button id="advancedModeSelectionBtn">Advanced</button>
+            <button id="cancelModeSelectionBtn">cancel</button>
+            <button id="continueModeSelectionBtn">continue</button>
+            <button id="closeModeSelectionMessageFromSideBarBtn"><i class="bi bi-x-lg"></i></button>
+        </div>
+    </div>
+    <!-- Mode Selection -->
+
+    <!-- Card Swap -->
+    <div id="cardSwapMessageFromSideBarContainer">
+        <p id="cardSwapMessageFromSideBar"></p>
+        <div class="cancel_closeCardSwapMessageFromSideBar_continue_Btn-Container">
+            <button id="cancelCardSwapBtn">cancel</button>
+            <button id="closeCardSwapMessageFromSideBarBtn"><i class="bi bi-x-lg"></i></button>
+            <button id="continueCardSwapBtn">continue</button>
+        </div>
+    </div>
+    <!-- Card Swap -->
+
+    <!-- Card Reshuffle -->
+    <div id="cardReshuffleMessageFromSideBarContainer">
+        <p id="cardReshuffleMessageFromSideBar"></p>
+        <div class="cancel_closeCardReshuffleMessageFromSideBar_continue_Btn-Container">
+            <button id="cancelCardReshuffleBtn">cancel</button>
+            <button id="closeCardReshuffleMessageFromSideBarBtn"><i class="bi bi-x-lg"></i></button>
+            <button id="continueCardReshuffleBtn">continue</button>
+        </div>
+    </div>
+    <!-- Card Reshuffle -->
+
+    <!-- Auto Deal -->
+    <div id="autoDealMessageFromSideBarContainer">
+        <p id="autoDealMessageFromSideBar"></p>
+        <h2 id="autoDealHeader">Auto-deal rounds</h2>
+        <input type="number" id="autoDealRounds" placeholder="number of rounds">
+        <div class="stop_cancel_closeAutoDealMessageFromSideBar_continue_Btn-Container">
+            <button id="stopAutoDealBtn">stop</button>
+            <button id="cancelAutoDealBtn">cancel</button>
+            <button id="closeAutoDealMessageFromSideBarBtn"><i class="bi bi-x-lg"></i></button>
+            <button id="closeAutoDealWarningMessageFromSideBarBtn"><i class="bi bi-x-lg"></i></button>
+            <button id="continueAutoDealBtn">continue</button>
+        </div>
+    </div>
+    <!-- Auto Deal -->
+
+    <div id="userIDContainer" class="userID-container">
+        <h2 id="userIdHeader">Enter your UserID</h2>
+        <input type="text" id="inputUserID" placeholder="UserID">
+        <span id="existedUserID" style="font-size: 25px"></span>
+        <br><br>
+        <button id="startPlayingBtn" class="startPlayingBtn">Start Playing!</button>
+    </div>
+
+    <div id="slidePanel" class="slide-panel">
+        <button id="panelCloseBtn" class="panelCloseBtn">&times;</button>
+        <h2>Road Map</h2>
+
+        <div class="roadMap-grid">
+            <div class="cell"><span id="cell1"></span></div>
+            <div class="cell"><span id="cell7"></span></div>
+            <div class="cell"><span id="cell13"></span></div>
+            <div class="cell"><span id="cell19"></span></div>
+            <div class="cell"><span id="cell25"></span></div>
+            <div class="cell"><span id="cell31"></span></div>
+            <div class="cell"><span id="cell37"></span></div>
+            <div class="cell"><span id="cell43"></span></div>
+            <div class="cell"><span id="cell49"></span></div>
+            <div class="cell"><span id="cell55"></span></div>
+
+            <div class="cell"><span id="cell2"></span></div>
+            <div class="cell"><span id="cell8"></span></div>
+            <div class="cell"><span id="cell14"></span></div>
+            <div class="cell"><span id="cell20"></span></div>
+            <div class="cell"><span id="cell26"></span></div>
+            <div class="cell"><span id="cell32"></span></div>
+            <div class="cell"><span id="cell38"></span></div>
+            <div class="cell"><span id="cell44"></span></div>
+            <div class="cell"><span id="cell50"></span></div>
+            <div class="cell"><span id="cell56"></span></div>
+
+            <div class="cell"><span id="cell3"></span></div>
+            <div class="cell"><span id="cell9"></span></div>
+            <div class="cell"><span id="cell15"></span></div>
+            <div class="cell"><span id="cell21"></span></div>
+            <div class="cell"><span id="cell27"></span></div>
+            <div class="cell"><span id="cell33"></span></div>
+            <div class="cell"><span id="cell39"></span></div>
+            <div class="cell"><span id="cell45"></span></div>
+            <div class="cell"><span id="cell51"></span></div>
+            <div class="cell"><span id="cell57"></span></div>
+
+            <div class="cell"><span id="cell4"></span></div>
+            <div class="cell"><span id="cell10"></span></div>
+            <div class="cell"><span id="cell16"></span></div>
+            <div class="cell"><span id="cell22"></span></div>
+            <div class="cell"><span id="cell28"></span></div>
+            <div class="cell"><span id="cell34"></span></div>
+            <div class="cell"><span id="cell40"></span></div>
+            <div class="cell"><span id="cell46"></span></div>
+            <div class="cell"><span id="cell52"></span></div>
+            <div class="cell"><span id="cell58"></span></div>
+
+            <div class="cell"><span id="cell5"></span></div>
+            <div class="cell"><span id="cell11"></span></div>
+            <div class="cell"><span id="cell17"></span></div>
+            <div class="cell"><span id="cell23"></span></div>
+            <div class="cell"><span id="cell29"></span></div>
+            <div class="cell"><span id="cell35"></span></div>
+            <div class="cell"><span id="cell41"></span></div>
+            <div class="cell"><span id="cell47"></span></div>
+            <div class="cell"><span id="cell53"></span></div>
+            <div class="cell"><span id="cell59"></span></div>
+
+            <div class="cell"><span id="cell6"></span></div>
+            <div class="cell"><span id="cell12"></span></div>
+            <div class="cell"><span id="cell18"></span></div>
+            <div class="cell"><span id="cell24"></span></div>
+            <div class="cell"><span id="cell30"></span></div>
+            <div class="cell"><span id="cell36"></span></div>
+            <div class="cell"><span id="cell42"></span></div>
+            <div class="cell"><span id="cell48"></span></div>
+            <div class="cell"><span id="cell54"></span></div>
+            <div class="cell"><span id="cell60"></span></div>
+        </div>
+
+        <hr>
+        <h2>Undealt Cards (<span id="numberOfUndealtCards"></span>)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Card</th>
+                    <th scope="col">Remaining</th>
+                    <th scope="col">Probability</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td id="card1Remaining"></td>
+                    <td id="card1Probability"></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td id="card2Remaining"></td>
+                    <td id="card2Probability"></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td id="card3Remaining"></td>
+                    <td id="card3Probability"></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td id="card4Remaining"></td>
+                    <td id="card4Probability"></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td id="card5Remaining"></td>
+                    <td id="card5Probability"></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td id="card6Remaining"></td>
+                    <td id="card6Probability"></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td id="card7Remaining"></td>
+                    <td id="card7Probability"></td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td id="card8Remaining"></td>
+                    <td id="card8Probability"></td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td id="card9Remaining"></td>
+                    <td id="card9Probability"></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td id="card10Remaining"></td>
+                    <td id="card10Probability"></td>
+                </tr>
+                <tr>
+                    <td>J</td>
+                    <td id="cardJRemaining"></td>
+                    <td id="cardJProbability"></td>
+                </tr>
+                <tr>
+                    <td>Q</td>
+                    <td id="cardQRemaining"></td>
+                    <td id="cardQProbability"></td>
+                </tr>
+                <tr>
+                    <td>K</td>
+                    <td id="cardKRemaining"></td>
+                    <td id="cardKProbability"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="index.js"></script>
+    <script src="canvas.js"></script>
+    <script src="roadMap.js"></script>
+    <script src="cardSqueeze.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
